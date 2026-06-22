@@ -36,7 +36,7 @@
     <!-- Quick Start Code -->
     <section class="pb-20 px-6">
       <div class="max-w-3xl mx-auto">
-        <div class="code-block text-left" v-html="pythonCode"></div>
+        <CodeBlock :html="pythonCode" :raw="pythonRaw" />
       </div>
     </section>
 
@@ -107,11 +107,11 @@
         <div class="mt-12 space-y-8">
           <div>
             <h3 class="text-lg font-semibold text-[#1E293B] mb-4">Python SDK</h3>
-            <div class="code-block text-left" v-html="pythonCode"></div>
+            <CodeBlock :html="pythonCode" :raw="pythonRaw" />
           </div>
           <div>
             <h3 class="text-lg font-semibold text-[#1E293B] mb-4">cURL</h3>
-            <div class="code-block text-left" v-html="curlCode"></div>
+            <CodeBlock :html="curlCode" :raw="curlRaw" />
           </div>
         </div>
       </div>
@@ -127,7 +127,33 @@
 </template>
 
 <script setup>
+import CodeBlock from '../components/CodeBlock.vue'
+
 const baseUrl = 'http://token.sunki.asia:1002/v1'
+
+const pythonRaw = `from openai import OpenAI
+
+client = OpenAI(
+    api_key="your-api-key",
+    base_url="${baseUrl}"
+)
+
+response = client.chat.completions.create(
+    model="DeepSeek-V3.2-Pro",
+    messages=[
+        {"role": "user", "content": "你好"}
+    ]
+)
+
+print(response.choices[0].message.content)`
+
+const curlRaw = `curl ${baseUrl}/chat/completions \\
+  -H "Authorization: Bearer your-api-key" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "DeepSeek-V3.2-Pro",
+    "messages": [{"role": "user", "content": "你好"}]
+  }'`
 
 const pythonCode = `<span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI
 
